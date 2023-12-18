@@ -17,19 +17,19 @@ const ChatComponent = () => {
       ]);
 
       try {
-        const response = await fetchData("http://0.0.0.0:8000", {
+        const response = await fetchData("http://0.0.0.0:8000/chat", {
           prompt: message,
           history: messages.reduce((acc, message) => {
             if (message.sender === "error") {
               return acc;
             }
-            return [...acc, message.text];
-          }),
+            return acc + `${message.sender}: "${message.text}" \n`;
+          }, ""),
         });
 
         setMessages((messages) => [
           ...messages,
-          { sender: "ai", text: response },
+          { sender: "ai", text: response.response },
         ]);
       } catch (error) {
         setMessages((messages) => [
